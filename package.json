@@ -1,0 +1,26 @@
+{
+  "name": "@apio/gravity-worker",
+  "version": "1.0.1",
+  "description": "Package to help handle Apio Gravity jobs.",
+  "repository": "gitlab:apio-private/apio-gravity-worker",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx nyc ava test/*.spec.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fatmatto/ptth": "^1.5.7",
+    "cron": "^1.7.1"
+  },
+  "devDependencies": {
+    "ava": "^3.15.0",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "nock": "^10.0.6"
+  }
+}
