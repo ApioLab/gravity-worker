@@ -11,7 +11,7 @@ class Worker extends EventEmitter {
    * @param {String} config.topic The name of the kind of jobs this worker will run
    * @param {String} [config.scheduling] Cron expression to state when to look for queued jobs to process. Defaults to every minute.
    * @param {String} [config.gravityUrl] The gravity instance's url
-   * @param {String} [config.timezone] The gravity instance's url
+   * @param {String} [config.timezone] The timezone to use in the cron parser
    * @param {String} [config.retryBackoff] Backoff time after a job is set to be retried
    *
    */
