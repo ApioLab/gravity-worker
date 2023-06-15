@@ -12,11 +12,13 @@ class Worker extends EventEmitter {
    * @param {String} [config.scheduling] Cron expression to state when to look for queued jobs to process. Defaults to every minute.
    * @param {String} [config.gravityUrl] The gravity instance's url
    * @param {String} [config.timezone] The gravity instance's url
+   * @param {String} [config.retryBackoff] Backoff time after a job is set to be retried
    *
    */
   constructor (config) {
     super()
     this.topic = config.topic
+    this.retryBackoff = config.retryBackoff || null
     this.gravityUrl = config.gravityUrl
     this.scheduling = config.scheduling || '* * * * *'
     if (config.timezone) {
@@ -63,7 +65,7 @@ class Worker extends EventEmitter {
       method: 'PUT',
       url: `${this.gravityUrl}/jobs/${jobUuid}/complete`,
       body: {
-        output: output
+        output
       }
     })
     this.emit('complete', response.body.data)
@@ -79,7 +81,7 @@ class Worker extends EventEmitter {
       method: 'PUT',
       url: `${this.gravityUrl}/jobs/${jobUuid}/fail`,
       body: {
-        error: error
+        error
       }
     })
     this.emit('fail', response.body.data)
@@ -91,9 +93,19 @@ class Worker extends EventEmitter {
    * @param {String} jobUuid The job uuid
    */
   async return (jobUuid) {
+    const options = {}
+
+    if (this.retryBackoff !== null) {
+      // Retry backoff is expressed in milliseconds
+      // we will add these milliseconds to the current time
+      const currentTime = Date.now()
+      const backoffMs = currentTime + this.retryBackoff
+      options.backoffUntil = new Date(backoffMs).toISOString()
+    }
     const response = await request({
       method: 'PUT',
-      url: `${this.gravityUrl}/jobs/${jobUuid}/return`
+      url: `${this.gravityUrl}/jobs/${jobUuid}/return`,
+      body: options
     })
     this.emit('return', response.body.data)
     return response.body.data
