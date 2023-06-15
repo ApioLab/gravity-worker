@@ -1,6 +1,6 @@
 {
   "name": "@apio/gravity-worker",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Package to help handle Apio Gravity jobs.",
   "repository": "gitlab:apio-private/apio-gravity-worker",
   "main": "index.js",
